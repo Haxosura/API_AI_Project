@@ -15,7 +15,7 @@ class API_PROJECT_API UEnemy_BTTask_FindRandomLocation : public UBTTask_Blackboa
     GENERATED_BODY()
 
 public:
-    UEnemy_BTTask_FindRandomLocation();
+    explicit UEnemy_BTTask_FindRandomLocation(FObjectInitializer const& ObjectInitializer);
 
 private:
     virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;

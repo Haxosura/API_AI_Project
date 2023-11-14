@@ -7,14 +7,14 @@
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-UEnemy_BTTask_FindRandomLocation::UEnemy_BTTask_FindRandomLocation()
+
+UEnemy_BTTask_FindRandomLocation::UEnemy_BTTask_FindRandomLocation(FObjectInitializer const& ObjectInitializer) : UBTTask_BlackboardBase{ ObjectInitializer }
 {
-    NodeName = TEXT("Find Randmo Location");
+    NodeName = TEXT("Find Random Location");
 
     // Accept Only Vector
     BlackboardKey.AddVectorFilter(this, GET_MEMBER_NAME_CHECKED(
         UEnemy_BTTask_FindRandomLocation, BlackboardKey));
-
 }
 
 EBTNodeResult::Type UEnemy_BTTask_FindRandomLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
