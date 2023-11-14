@@ -15,7 +15,7 @@ public:
     // Sets default values for this actor's properties
     APatrolPath();
 
-    FVector GetPatrolPoint(int const index);
+    FVector GetPatrolPoint(int const index) const;
     int Num() const;
 
 private:

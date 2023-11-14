@@ -4,12 +4,7 @@
 #include "EnemyCharacter.h"
 
 // Sets default values
-AEnemyCharacter::AEnemyCharacter()
-{
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
 
-}
 
 // Called when the game starts or when spawned
 void AEnemyCharacter::BeginPlay()
@@ -17,6 +12,12 @@ void AEnemyCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 }
+
+AEnemyCharacter::AEnemyCharacter()
+{
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+}	
 
 // Called every frame
 void AEnemyCharacter::Tick(float DeltaTime)
@@ -36,4 +37,3 @@ APatrolPath* AEnemyCharacter::GetPatrolPath() const
 {
 	return PatrolPath;
 }
-

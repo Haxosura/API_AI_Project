@@ -21,7 +21,7 @@ EBTNodeResult::Type UEnemy_BTTask_FindPathPoint::ExecuteTasK(UBehaviorTreeCompon
 		if (auto* const bc = OwnerComp.GetBlackboardComponent())
 		{
 			// Get the current patrol path index from the blackboard
-			auto const index = bc->GetValueAsInt((GetSelectedBlackboardKey()));
+			auto const index = bc->GetValueAsInt(GetSelectedBlackboardKey());
 
 			// Get the NPC
 			if (auto* enemy = Cast<AEnemyCharacter>(cont->GetPawn()))
