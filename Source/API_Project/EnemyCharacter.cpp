@@ -32,3 +32,8 @@ void AEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 }
 
+APatrolPath* AEnemyCharacter::GetPatrolPath() const
+{
+	return PatrolPath;
+}
+
