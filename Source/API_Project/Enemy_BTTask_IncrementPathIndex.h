@@ -16,7 +16,7 @@ class API_PROJECT_API UEnemy_BTTask_IncrementPathIndex : public UBTTask_Blackboa
 	
 public:
 	explicit UEnemy_BTTask_IncrementPathIndex(FObjectInitializer const& ObjectInitializer);
-	virtual EBTNodeResult::Type ExecuteTasK(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory);
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 private:
 

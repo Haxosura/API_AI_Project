@@ -18,4 +18,4 @@ FVector APatrolPath::GetPatrolPoint(int const index) const
 int APatrolPath::Num() const
 {
     return PatrolPoints.Num();
-}
+}   

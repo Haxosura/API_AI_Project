@@ -17,7 +17,11 @@ class API_PROJECT_API UEnemy_BTTask_FindPathPoint : public UBTTask_BlackboardBas
 public:
 
 	explicit UEnemy_BTTask_FindPathPoint(FObjectInitializer const& ObjectInitializer);
-	virtual EBTNodeResult::Type ExecuteTasK(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory);
+
+private:
+
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+	virtual FString GetStaticDescription() const override;
 
 	UPROPERTY(EditAnywhere, Category = "Blackbaord", meta = (AllowPrivateAccess = "true"))
 	FBlackboardKeySelector PatrolPathVectorKey;

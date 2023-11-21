@@ -11,7 +11,7 @@ UEnemy_BTTask_FindPathPoint::UEnemy_BTTask_FindPathPoint(FObjectInitializer cons
 	NodeName = TEXT("Find Path Point");
 }
 
-EBTNodeResult::Type UEnemy_BTTask_FindPathPoint::ExecuteTasK(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UEnemy_BTTask_FindPathPoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	// Attempt to get the enmey's controller
 	if (auto* const cont = Cast<AEnemyAIController>(OwnerComp.GetAIOwner()))
@@ -41,4 +41,9 @@ EBTNodeResult::Type UEnemy_BTTask_FindPathPoint::ExecuteTasK(UBehaviorTreeCompon
 	}
 
 	return EBTNodeResult::Failed;
+}
+
+FString UEnemy_BTTask_FindPathPoint::GetStaticDescription() const
+{
+	return FString::Printf(TEXT("Vector: %s"), *BlackboardKey.SelectedKeyName.ToString());
 }

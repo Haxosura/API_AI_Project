@@ -12,7 +12,7 @@ UEnemy_BTTask_IncrementPathIndex::UEnemy_BTTask_IncrementPathIndex(FObjectInitia
 	NodeName = TEXT("Increment Path Index");
 }
 
-EBTNodeResult::Type UEnemy_BTTask_IncrementPathIndex::ExecuteTasK(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UEnemy_BTTask_IncrementPathIndex::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	// Try and Get the AI Coontroller
 	if (auto* const Cont = Cast<AEnemyAIController>(OwnerComp.GetAIOwner()))
