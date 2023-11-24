@@ -29,4 +29,5 @@ protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI", meta = (AllowPrivateAccess = true));
     TObjectPtr<UBlackboardComponent> BlackboardComponent;
+    
 };
