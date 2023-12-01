@@ -1,9 +1,9 @@
 /** Custom AI Controller For Enemy*/
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "EnemyAIController.generated.h"
 
 class UBehaviorTreeComponent;
@@ -30,4 +30,11 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI", meta = (AllowPrivateAccess = true));
     TObjectPtr<UBlackboardComponent> BlackboardComponent;
     
+private:
+    class UAISenseConfig_Sight* SightConfig;
+
+    void SetupPerceptionSystem();
+
+    UFUNCTION()
+    void OnTargetDetected(AActor* Actor, FAIStimulus const Stimulus);
 };
