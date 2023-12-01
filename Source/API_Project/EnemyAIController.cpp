@@ -15,6 +15,8 @@ AEnemyAIController::AEnemyAIController()
 {
     BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("Behavior Tree Component"));
     BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard Component"));
+
+    SetupPerceptionSystem();
 }
 
 void AEnemyAIController::BeginPlay()
@@ -64,5 +66,6 @@ void AEnemyAIController::OnTargetDetected(AActor* Actor, FAIStimulus const Stimu
     if (auto* const ch = Cast<AAPI_ProjectCharacter>(Actor))
     {
         GetBlackboardComponent()->SetValueAsBool("CanSeePlayer", Stimulus.WasSuccessfullySensed());
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Player Seen"));
     }
 }

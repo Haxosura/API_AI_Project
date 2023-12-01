@@ -25,5 +25,4 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Blackbaord", meta = (AllowPrivateAccess = "true"))
 	FBlackboardKeySelector PatrolPathVectorKey;
-
 };
