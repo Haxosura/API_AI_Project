@@ -25,4 +25,13 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Blackbaord", meta = (AllowPrivateAccess = "true"))
 	FBlackboardKeySelector PatrolPathVectorKey;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Search", meta = (AllowPrivateAccess = true))
+	float SearchPointRaduis{ 500.f };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Search", meta = (AllowPrivateAccess = "true"));
+	bool SearchRandomPoint = false;
+
+
+	//virtual EBTNodeResult::Type ExecuteTaskk(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };
