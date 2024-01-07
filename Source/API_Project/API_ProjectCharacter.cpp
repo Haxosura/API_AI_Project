@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+ // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "API_ProjectCharacter.h"
 #include "Camera/CameraComponent.h"
@@ -49,9 +49,46 @@ AAPI_ProjectCharacter::AAPI_ProjectCharacter()
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	SetupStimulusSource();
-	
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	CrouchEyeOffset = FVector(0.f);
+	CrouchSpeed = 12.f;
+
+}
+
+void AAPI_ProjectCharacter::OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
+{
+	if (HalfHeightAdjust == 0.f)
+	{
+		return;
+	}
+
+	float StartBaseEyeHeight = BaseEyeHeight;
+	Super::OnStartCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+	CrouchEyeOffset.Z += StartBaseEyeHeight - BaseEyeHeight + HalfHeightAdjust;
+	FollowCamera->SetRelativeLocation(FVector(0.f, 0.f, BaseEyeHeight), false);
+}
+
+void AAPI_ProjectCharacter::OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
+{
+	if (HalfHeightAdjust == 0.f)
+	{
+		return;
+	}
+
+	float StartBaseEyeHeight = BaseEyeHeight;
+	Super::OnEndCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+	CrouchEyeOffset.Z += StartBaseEyeHeight - BaseEyeHeight - HalfHeightAdjust;
+	FollowCamera->SetRelativeLocation(FVector(0.f, 0.f, BaseEyeHeight), false);
+
+}
+
+void AAPI_ProjectCharacter::CalcCamera(float DeltaTime, FMinimalViewInfo& OutResult)
+{
+	if (FollowCamera)
+	{
+		FollowCamera->GetCameraView(DeltaTime, OutResult);
+		OutResult.Location += CrouchEyeOffset;
+	}
 }
 
 void AAPI_ProjectCharacter::BeginPlay()
@@ -69,6 +106,14 @@ void AAPI_ProjectCharacter::BeginPlay()
 	}
 }
 
+void AAPI_ProjectCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	float CrouchTnterpTime = FMath::Min(1.f, CrouchSpeed * DeltaTime);
+	CrouchEyeOffset = (1.f - CrouchTnterpTime) * CrouchEyeOffset;
+}
+
 void AAPI_ProjectCharacter::SetupStimulusSource()
 {
 	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus"));
@@ -79,7 +124,25 @@ void AAPI_ProjectCharacter::SetupStimulusSource()
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
+void AAPI_ProjectCharacter::StartCrouch()
+{
+    PlayerCrouching = true;
+
+    Crouch();
+
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Is Crouching"));
+}
+
+void AAPI_ProjectCharacter::StopCrouch()
+{
+    PlayerCrouching = false;
+    
+    UnCrouch();
+    
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Is not Crouching"));
+
+}
+
 // Input
 
 void AAPI_ProjectCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -90,6 +153,10 @@ void AAPI_ProjectCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		//Jumping
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+
+		//Crouch
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &AAPI_ProjectCharacter::StartCrouch);
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &AAPI_ProjectCharacter::StopCrouch);
 
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAPI_ProjectCharacter::Move);

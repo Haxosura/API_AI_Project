@@ -37,8 +37,17 @@ class AAPI_ProjectCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* CrouchAction;
+
 public:
 	AAPI_ProjectCharacter();
+
+	void OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
+
+	void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
+
+	void CalcCamera(float DeltaTime, struct FMinimalViewInfo& OutResult) override;
 
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -59,9 +68,24 @@ protected:
 	// To add mapping context
 	virtual void BeginPlay();
 
+	virtual void Tick(float DeltaTime);
+
 private:
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;
 
 	void SetupStimulusSource();
+
+	void StartCrouch();
+	void StopCrouch();
+
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Crouch);
+	FVector CrouchEyeOffset;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Crouch);
+	float CrouchSpeed;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Crouch);
+	bool PlayerCrouching = false;
 };
 
