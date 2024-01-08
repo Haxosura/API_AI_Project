@@ -1,10 +1,10 @@
-
 #pragma once
-
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "PatrolPath.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
+#include "Components/SphereComponent.h"
+#include "Components/PrimitiveComponent.h"
 #include "EnemyCharacter.generated.h"
 
 UCLASS()
@@ -14,7 +14,7 @@ class API_PROJECT_API AEnemyCharacter : public ACharacter
 
 public:
 	// Sets default values for this character's properties
-	AEnemyCharacter();
+	AEnemyCharacter(const FObjectInitializer& objectInitializer);
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -23,6 +23,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	APatrolPath* GetPatrolPath() const;
+
+	UFUNCTION()
+	void OnDeathSphereBeginOverlap(class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
 	// Called when the game starts or when spawned
@@ -34,4 +37,14 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	APatrolPath* PatrolPath;
+
+public:
+	
+	
+
+	// Sphere Used to kill player
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	USphereComponent* DeathSphere;
+
+	
 };
