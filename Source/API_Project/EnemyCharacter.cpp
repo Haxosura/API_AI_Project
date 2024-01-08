@@ -10,7 +10,6 @@
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 AEnemyCharacter::AEnemyCharacter()
