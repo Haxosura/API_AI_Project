@@ -18,10 +18,7 @@ AEnemyCharacter::AEnemyCharacter()
 	DeathSphere->SetSphereRadius(20.f);
 	DeathSphere->SetHiddenInGame(false);
 	DeathSphere->SetCollisionProfileName("Trigger");
-
-	RootComponent = DeathSphere;
-	//DeathSphere->SetupAttachment(RootComponent);
-
+	DeathSphere->SetupAttachment(RootComponent);
 	DeathSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemyCharacter::OnBeginOverlap);
 }
 
@@ -47,6 +44,6 @@ void AEnemyCharacter::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor
 {
 	if (auto* const ch = Cast<AAPI_ProjectCharacter>(OtherActor))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Purple, TEXT("Enemy Hit"));
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Purple, TEXT("Actor Hit"));
 	}
 }

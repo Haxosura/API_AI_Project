@@ -30,10 +30,10 @@ protected:
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
-	UBehaviorTree* Tree = nullptr;
+	UBehaviorTree* Tree;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
-	APatrolPath* PatrolPath = nullptr;
+	APatrolPath* PatrolPath;
 
 public:
 	// Sphere Used to kill player
