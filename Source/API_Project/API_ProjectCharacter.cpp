@@ -1,6 +1,8 @@
  // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "API_ProjectCharacter.h"
+#include "EnemyCharacter.h"
+#include "Item_Keys.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -110,9 +112,12 @@ void AAPI_ProjectCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	InteractCheck();
+
 	float CrouchTnterpTime = FMath::Min(1.f, CrouchSpeed * DeltaTime);
 	CrouchEyeOffset = (1.f - CrouchTnterpTime) * CrouchEyeOffset;
 }
+
 
 void AAPI_ProjectCharacter::SetupStimulusSource()
 {
@@ -130,7 +135,7 @@ void AAPI_ProjectCharacter::StartCrouch()
 
     Crouch();
 
-    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Is Crouching"));
+    //GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Is Crouching"));
 }
 
 void AAPI_ProjectCharacter::StopCrouch()
@@ -139,10 +144,41 @@ void AAPI_ProjectCharacter::StopCrouch()
     
     UnCrouch();
     
-    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Is not Crouching"));
+    //GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Is not Crouching"));
 
 }
 
+void AAPI_ProjectCharacter::Interact()
+{
+	if (const auto Actor = Cast<AEnemyCharacter>(InteractHitResualt.GetActor()))
+	{
+
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Blue, TEXT("Item Pickup"));
+
+		Actor->Destroy();
+
+	}
+}
+
+void AAPI_ProjectCharacter::InteractCheck()
+{
+	Cast<APlayerController>(GetController())->GetPlayerViewPoint(ViewVector, ViewRotation);
+	FVector VecDirection = ViewRotation.Vector() * 1000.f;
+	FVector InteractEnd = ViewVector + VecDirection;
+	FCollisionQueryParams QueryParams;
+	GetWorld()->LineTraceSingleByChannel(InteractHitResualt, ViewVector, InteractEnd, ECollisionChannel::ECC_GameTraceChannel1, QueryParams);
+
+	if (const auto Actor = Cast<AEnemyCharacter>(InteractHitResualt.GetActor()))
+	{
+		Actor->Destroy();
+	}
+	if (const auto Actor = Cast<AItem_Keys>(InteractHitResualt.GetActor()))
+	{
+		Actor->Destroy();
+
+		Keys += 1;
+	}
+}
 // Input
 
 void AAPI_ProjectCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)

@@ -24,12 +24,14 @@ protected:
 
 public:	
 	// Called every frame
-	//virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
 	bool SpawnActor();
 
 	void ScheduleActorSpawn();
+
+	int ActorNumer = 0;
 
 private:
 	UFUNCTION()

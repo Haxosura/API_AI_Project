@@ -13,9 +13,6 @@ class API_PROJECT_API AEnemyCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
-	AEnemyCharacter();
-
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -34,14 +31,4 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 	APatrolPath* PatrolPath;
-
-public:
-	// Sphere Used to kill player
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	USphereComponent* DeathSphere;
-
-	UFUNCTION()
-	void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	
 };

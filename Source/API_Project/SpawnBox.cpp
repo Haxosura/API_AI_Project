@@ -35,11 +35,15 @@ void ASpawnBox::EndPlay(const EEndPlayReason::Type EndPlayReason)
 }
 
 // Called every frame
-/*void ASpawnBox::Tick(float DeltaTime)
+void ASpawnBox::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-}*/
+	if (ActorNumer <= 3)
+	{
+		ShouldSpawn = false;
+	}
+}
 
 bool ASpawnBox::SpawnActor()
 {
@@ -58,13 +62,15 @@ bool ASpawnBox::SpawnActor()
 
 		// Spawn Actor
 		SpawnedActor = GetWorld()->SpawnActor(ActorClassToSpawn, &SpawnLocation) != nullptr;
+		ActorNumer += 1;
+
 	}
 
 	return SpawnedActor;
 }
 
 void ASpawnBox::ScheduleActorSpawn()
-{
+{	
 	// Compute time offset to spawn
 	float DetlaToNextSpawn = AvgSpawnTime + (-RandomSpawnTimeOffset + 2 * RandomSpawnTimeOffset * FMath::FRand());
 	

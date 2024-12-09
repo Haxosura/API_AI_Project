@@ -40,6 +40,9 @@ class AAPI_ProjectCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* CrouchAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* PauseAction;
+
 public:
 	AAPI_ProjectCharacter();
 
@@ -70,6 +73,8 @@ protected:
 
 	virtual void Tick(float DeltaTime);
 
+	void Pause();
+
 private:
 	class UAIPerceptionStimuliSourceComponent* StimulusSource;
 
@@ -87,5 +92,18 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Crouch);
 	bool PlayerCrouching = false;
+
+	bool Paused = false;
+
+	int Keys = 0;
+
+protected:
+	void Interact();
+	void InteractCheck();
+
+	FVector ViewVector;
+	FRotator ViewRotation;
+	FHitResult InteractHitResualt;
+
 };
 
